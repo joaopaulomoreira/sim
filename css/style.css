@@ -1,0 +1,107 @@
+/* css/style.css */
+
+/* Definição da Nova Paleta de Cores */
+:root {
+    --custom-dark-blue: #113F67;
+    --custom-medium-blue: #34699A;
+    --custom-light-blue: #58A0C8;
+    --custom-light-yellow: #FDF5AA;
+
+    /* Mapeamento das cores para as variáveis do Bootstrap/AdminLTE
+       Isso afeta botões, backgrounds de boxes, links, etc. */
+    --bs-primary: var(--custom-dark-blue);
+    --bs-info: var(--custom-medium-blue);
+    --bs-success: var(--custom-light-blue); /* Usando light-blue para sucesso, pode ajustar */
+    --bs-warning: var(--custom-light-yellow);
+
+    /* Cores de texto para small-box warning, para garantir legibilidade */
+    --bs-warning-text-emphasis: var(--bs-body-color); /* Adapta o texto para escuro */
+    --bs-warning-border-subtle: rgba(0,0,0,0.1);
+}
+
+/* Sobrescrever cores de fundo para os small-boxes do dashboard */
+.small-box.text-bg-info {
+    background-color: var(--custom-medium-blue) !important;
+}
+
+.small-box.text-bg-success {
+    background-color: var(--custom-light-blue) !important;
+}
+
+.small-box.text-bg-warning {
+    background-color: var(--custom-light-yellow) !important;
+}
+.small-box.text-bg-warning .inner p,
+.small-box.text-bg-warning .inner h3 {
+  color: var(--bs-body-color) !important; /* Texto escuro para small-box warning */
+}
+.small-box.text-bg-warning .icon {
+  color: rgba(0,0,0,0.2) !important; /* Ícone um pouco mais escuro no warning */
+}
+
+.small-box.text-bg-primary {
+    background-color: var(--custom-dark-blue) !important;
+}
+
+
+/* Sobrescrever cores de background do sidebar (modo escuro) */
+.app-sidebar.bg-body-secondary.shadow[data-bs-theme="dark"] {
+    background-color: var(--custom-dark-blue) !important;
+}
+/* Cores dos links ativos no sidebar */
+.app-sidebar .nav-link.active {
+    background-color: var(--custom-medium-blue) !important;
+    color: #fff !important; /* Garante texto branco em fundo escuro */
+}
+.app-sidebar .nav-link.active p,
+.app-sidebar .nav-link.active i {
+    color: #fff !important;
+}
+
+/* Cores de botões, se não forem cobertas pelas variáveis globais */
+.btn-primary {
+    background-color: var(--custom-dark-blue) !important;
+    border-color: var(--custom-dark-blue) !important;
+    color: #fff !important;
+}
+.btn-primary:hover {
+    background-color: #0E3554 !important; /* Ligeiramente mais escuro para hover */
+    border-color: #0E3554 !important;
+}
+
+.btn-info {
+    background-color: var(--custom-medium-blue) !important;
+    border-color: var(--custom-medium-blue) !important;
+    color: #fff !important;
+}
+.btn-info:hover {
+    background-color: #2D5B84 !important;
+    border-color: #2D5B84 !important;
+}
+
+.btn-success {
+    background-color: var(--custom-light-blue) !important;
+    border-color: var(--custom-light-blue) !important;
+    color: #fff !important;
+}
+.btn-success:hover {
+    background-color: #4C8DB2 !important;
+    border-color: #4C8DB2 !important;
+}
+
+/* Cor de texto de ícones e números em cards (se necessário) */
+.text-info {
+    color: var(--custom-medium-blue) !important;
+}
+.text-success {
+    color: var(--custom-light-blue) !important;
+}
+.text-warning {
+    color: var(--custom-light-yellow) !important;
+}
+
+
+/* Ajustes gerais de layout (se necessário, do arquivo anterior) */
+.content-page {
+    min-height: 200px;
+}
