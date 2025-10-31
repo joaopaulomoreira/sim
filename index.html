@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Simulador Pet Shop | AdminLTE 4</title>
+
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#007bff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
+    <meta name="title" content="Simulador Pet Shop" />
+    <meta name="author" content="Seu Nome" />
+    <meta name="description" content="Simulador de Pet Shop com AdminLTE 4 e JS puro" />
+    <meta name="keywords" content="pet shop, simulador, javascript, bootstrap 5, adminlte 4" />
+    <meta name="supported-color-schemes" content="light dark" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css" integrity="sha256-tXJfXfp6Ewt1ilPzLDtQnJV4hclT9XuaZUKyUvmyr+Q=" crossorigin="anonymous" media="print" onload="this.media='all'" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="adminlte/css/adminlte.min.css">
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="stylesheet" href="lib/apexcharts/css/apexcharts.css" />
+</head>
+<body class="layout-fixed sidebar-expand-lg sidebar-open bg-body-tertiary">
+    <div class="app-wrapper">
+
+        <nav class="app-header navbar navbar-expand bg-body">
+            <div class="container-fluid">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button">
+                            <i class="bi bi-list"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item d-none d-md-block">
+                        <span class="nav-link" id="current-page-title-nav">Simulador Pet Shop - Dashboard</span>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item d-flex align-items-center">
+                        <span class="nav-link">Dia: <strong id="current-turn-display">1</strong></span>
+                    </li>
+                    <li class="nav-item d-flex align-items-center">
+                        <span class="nav-link">Caixa: <strong id="cash-display">R$ 0.00</strong></span>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-primary btn-sm mx-2" id="advance-turn-btn">
+                            <i class="bi bi-arrow-right-circle me-1"></i> Avançar Turno
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-lte-toggle="fullscreen">
+                            <i data-lte-icon="maximize" class="bi bi-arrows-fullscreen"></i>
+                            <i data-lte-icon="minimize" class="bi bi-fullscreen-exit" style="display: none;"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+            <div class="sidebar-brand">
+                <a href="#" class="brand-link">
+                    <img src="assets/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image opacity-75 shadow" />
+                    <span class="brand-text fw-light">PetShop Admin</span>
+                </a>
+            </div>
+            <div class="sidebar-wrapper">
+                <nav class="mt-2">
+                    <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation" data-accordion="false">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link active" data-page="dashboard">
+                                <i class="nav-icon bi bi-speedometer"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-page="products">
+                                <i class="nav-icon bi bi-boxes"></i>
+                                <p>Produtos</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-page="finance">
+                                <i class="nav-icon bi bi-currency-dollar"></i>
+                                <p>Finanças</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-page="settings">
+                                <i class="nav-icon bi bi-gear"></i>
+                                <p>Configurações</p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <main class="app-main">
+            <div class="app-content-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h3 class="mb-0" id="page-content-title">Dashboard</h3>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-end">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page" id="page-content-breadcrumb">Dashboard</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="app-content">
+                <div class="container-fluid" id="page-content-wrapper">
+                    <div id="dashboard-page" class="content-page">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                                <div class="small-box text-bg-info">
+                                    <div class="inner">
+                                        <h3 id="dashboard-cash">R$ 0.00</h3>
+                                        <p>Caixa Atual</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="bi bi-currency-dollar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                                <div class="small-box text-bg-success">
+                                    <div class="inner">
+                                        <h3 id="dashboard-profit">R$ 0.00</h3>
+                                        <p>Lucro Total</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="bi bi-graph-up-arrow"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                                <div class="small-box text-bg-warning">
+                                    <div class="inner">
+                                        <h3 id="dashboard-day">Dia 1</h3>
+                                        <p>Turno Atual</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="bi bi-clock"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                                <div class="small-box text-bg-primary">
+                                    <div class="inner">
+                                        <h3 id="dashboard-total-stock">0</h3>
+                                        <p>Total de Produtos em Estoque</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="bi bi-boxes"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="card mb-4">
+                                    <div class="card-header border-0">
+                                        <div class="d-flex justify-content-between">
+                                            <h3 class="card-title">Visitantes da Loja Online</h3>
+                                            <a href="javascript:void(0);" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Ver Relatório</a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <p class="d-flex flex-column">
+                                                <span class="fw-bold fs-5">820</span> <span>Visitantes ao longo do tempo</span>
+                                            </p>
+                                            <p class="ms-auto d-flex flex-column text-end">
+                                                <span class="text-success"> <i class="bi bi-arrow-up"></i> 12.5% </span>
+                                                <span class="text-secondary">Desde a semana passada</span>
+                                            </p>
+                                        </div>
+                                        <div class="position-relative mb-4">
+                                            <div id="visitors-chart-container" style="height: 200px;"></div>
+                                        </div>
+                                        <div class="d-flex flex-row justify-content-end">
+                                            <span class="me-2">
+                                                <i class="bi bi-square-fill text-primary"></i> Esta Semana
+                                            </span>
+                                            <span> <i class="bi bi-square-fill text-secondary"></i> Semana Passada </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card mb-4">
+                                    <div class="card-header border-0">
+                                        <h3 class="card-title">Estoque Atual Detalhado</h3>
+                                        <div class="card-tools">
+                                            <a href="#" class="btn btn-tool btn-sm"> <i class="bi bi-download"></i> </a>
+                                            <a href="#" class="btn btn-tool btn-sm"> <i class="bi bi-list"></i> </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body table-responsive p-0">
+                                        <table class="table table-striped align-middle">
+                                            <thead>
+                                                <tr>
+                                                    <th>Produto</th>
+                                                    <th>Preço</th>
+                                                    <th>Vendas</th>
+                                                    <th>Estoque</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="dashboard-product-stock-table">
+                                                </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="card mb-4">
+                                    <div class="card-header border-0">
+                                        <div class="d-flex justify-content-between">
+                                            <h3 class="card-title">Vendas</h3>
+                                            <a href="javascript:void(0);" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Ver Relatório</a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <p class="d-flex flex-column">
+                                                <span class="fw-bold fs-5">$18,230.00</span> <span>Vendas ao longo do tempo</span>
+                                            </p>
+                                            <p class="ms-auto d-flex flex-column text-end">
+                                                <span class="text-success"> <i class="bi bi-arrow-up"></i> 33.1% </span>
+                                                <span class="text-secondary">Desde o ano passado</span>
+                                            </p>
+                                        </div>
+                                        <div class="position-relative mb-4">
+                                            <div id="sales-chart-container" style="height: 200px;"></div>
+                                        </div>
+                                        <div class="d-flex flex-row justify-content-end">
+                                            <span class="me-2">
+                                                <i class="bi bi-square-fill text-primary"></i> Este ano
+                                            </span>
+                                            <span> <i class="bi bi-square-fill text-secondary"></i> Ano passado </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card mb-4">
+                                    <div class="card-header border-0">
+                                        <div class="d-flex justify-content-between">
+                                            <h3 class="card-title">Produtos Mais Vendidos</h3>
+                                            <a href="javascript:void(0);" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Ver Detalhes</a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="position-relative mb-4">
+                                            <div id="most-sold-products-chart-container" style="height: 200px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card mb-4">
+                                    <div class="card-header border-0">
+                                        <div class="d-flex justify-content-between">
+                                            <h3 class="card-title">Quantidade de Vendas por Turno</h3>
+                                            <a href="javascript:void(0);" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Ver Histórico</a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="position-relative mb-4">
+                                            <div id="sales-quantity-chart-container" style="height: 200px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header border-0">
+                                        <h3 class="card-title">Visão Geral da Loja Online</h3>
+                                        <div class="card-tools">
+                                            <a href="#" class="btn btn-sm btn-tool"> <i class="bi bi-download"></i> </a>
+                                            <a href="#" class="btn btn-sm btn-tool"> <i class="bi bi-list"></i> </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                                            <p class="text-success fs-2">
+                                                <i class="bi bi-coin"></i>
+                                            </p>
+                                            <p class="d-flex flex-column text-end">
+                                                <span class="fw-bold">
+                                                    <i class="bi bi-graph-up-arrow text-success"></i> 12%
+                                                </span>
+                                                <span class="text-secondary">TAXA DE CONVERSÃO</span>
+                                            </p>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                                            <p class="text-info fs-2">
+                                                <i class="bi bi-cart"></i>
+                                            </p>
+                                            <p class="d-flex flex-column text-end">
+                                                <span class="fw-bold">
+                                                    <i class="bi bi-graph-up-arrow text-info"></i> 0.8%
+                                                </span>
+                                                <span class="text-secondary">TAXA DE VENDAS</span>
+                                            </p>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-0">
+                                            <p class="text-danger fs-2">
+                                                <i class="bi bi-person-plus"></i>
+                                            </p>
+                                            <p class="d-flex flex-column text-end">
+                                                <span class="fw-bold">
+                                                    <i class="bi bi-graph-down-arrow text-danger"></i>
+                                                    1%
+                                                </span>
+                                                <span class="text-secondary">TAXA DE REGISTRO</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="products-page" class="content-page d-none">
+                        <div class="card">
+                            <div class="card-header border-0">
+                                <h3 class="card-title">Produtos Disponíveis</h3>
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-3">Caixa Atual: <strong id="products-cash-display">R$ 0.00</strong></p>
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover align-middle">
+                                        <thead>
+                                            <tr>
+                                                <th>Produto</th>
+                                                <th>Estoque</th>
+                                                <th>Custo Compra</th>
+                                                <th>Preço Venda</th>
+                                                <th style="width: 180px;">Ações de Compra</th>
+                                                <th style="width: 180px;">Ações de Preço</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="products-table-body">
+                                            </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="finance-page" class="content-page d-none">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header border-0">
+                                        <h3 class="card-title">Balanço Atual</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>Caixa: <strong id="finance-cash">R$ 0.00</strong></p>
+                                        <p>Valor em Estoque: <strong id="finance-stock-value">R$ 0.00</strong></p>
+                                        <p class="fw-bold">Total de Ativos: <strong id="finance-total-assets">R$ 0.00</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header border-0">
+                                        <h3 class="card-title">Demonstrativo de Resultado (DRE)</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>Receita Total: <strong id="finance-revenue" class="text-success">R$ 0.00</strong></p>
+                                        <p>Despesas Totais: <strong id="finance-expenses" class="text-danger">R$ 0.00</strong></p>
+                                        <p class="fw-bold">Lucro/Prejuízo: <strong id="finance-profit" class="text-dark">R$ 0.00</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-4">
+                            <div class="card-header border-0">
+                                <h3 class="card-title">Histórico de Transações</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="finance-transactions-empty" class="text-center p-3 d-none">
+                                    <p>Nenhuma transação registrada ainda.</p>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover align-middle">
+                                        <thead>
+                                            <tr>
+                                                <th>Turno</th>
+                                                <th>Tipo</th>
+                                                <th>Descrição</th>
+                                                <th>Valor</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="finance-transactions-table-body">
+                                            </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="settings-page" class="content-page d-none">
+                        <div class="card">
+                            <div class="card-header border-0">
+                                <h3 class="card-title">Configurações do Jogo</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <button id="export-game-btn" class="btn btn-primary me-2 mb-2 mb-md-0">
+                                        <i class="bi bi-box-arrow-up me-1"></i> Exportar Jogo (JSON)
+                                    </button>
+                                    <label class="btn btn-info mb-0">
+                                        <i class="bi bi-box-arrow-down me-1"></i> Importar Jogo (JSON)
+                                        <input type="file" id="import-game-input" accept=".json" style="display: none;" />
+                                    </label>
+                                </div>
+                                <hr class="my-4"/>
+                                <div>
+                                    <button id="reset-game-btn" class="btn btn-danger">
+                                        <i class="bi bi-arrow-clockwise me-1"></i> Reiniciar Jogo
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <div class="float-end d-none d-sm-inline">Versão 4.0</div>
+            <strong>
+                Copyright &copy; 2024&nbsp;
+                <a href="#" class="text-decoration-none">Simulador Pet Shop</a>.
+            </strong>
+            All rights reserved.
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js" crossorigin="anonymous"></script>
+    <script src="adminlte/js/adminlte.min.js"></script>
+    <script>
+      const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
+      const Default = {
+        scrollbarTheme: 'os-theme-light',
+        scrollbarAutoHide: 'leave',
+        scrollbarClickScroll: true,
+      };
+      document.addEventListener('DOMContentLoaded', function () {
+        const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
+        if (sidebarWrapper && OverlayScrollbarsGlobal?.OverlayScrollbars !== undefined) {
+          OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
+            scrollbars: {
+              theme: Default.scrollbarTheme,
+              autoHide: Default.scrollbarAutoHide,
+              clickScroll: Default.scrollbarClickScroll,
+            },
+          });
+        }
+      });
+    </script>
+    <script src="lib/apexcharts/js/apexcharts.min.js"></script>
+
+    <script src="js/gameLogic.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
